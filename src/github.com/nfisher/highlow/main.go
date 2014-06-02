@@ -30,30 +30,38 @@ func Request(req string) time.Duration {
 	resp.Body.Close()
 	duration := time.Since(start)
 	dur := strconv.Itoa(int(duration / time.Millisecond))
-	log.Println("Queried in " + dur + "ms, len == " + strconv.Itoa(len(req)))
+	log.Println("Queried in " + dur + "ms, len == " + strconv.Itoa(len(req)) + ", status == " + resp.Status)
 
 	return duration
 }
 
 func main() {
-	if len(os.Args) != 3 {
+	url := "http://echo.maxymiser.qa/v5/?t="
+	start_length := 2048
+	arg_len := len(os.Args)
+
+	if arg_len != 3 && arg_len != 1 {
 		Usage()
 		os.Exit(1)
 	}
 
-	max_length, err := strconv.Atoi(os.Args[1])
-	if err != nil {
-		log.Println("Unable to parse MAX_URL_LENGTH")
-		Usage()
-		os.Exit(3)
+	if arg_len == 3 {
+		url = os.Args[2]
+		length, err := strconv.Atoi(os.Args[1])
+		if err != nil {
+			log.Println("Unable to parse MAX_URL_LENGTH")
+			Usage()
+			os.Exit(3)
+		}
+
+		start_length = length
 	}
 
-	url := os.Args[2]
-	size := max_length
-	pos := max_length
+	size := start_length
+	pos := start_length
 
 	for {
-		req := url + strings.Repeat("a", pos)
+		req := url + strings.Repeat("a", pos-len(url))
 
 		if size <= 0 {
 			log.Println("Upper boundary: " + req)
