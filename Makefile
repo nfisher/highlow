@@ -1,39 +1,33 @@
 # ex : shiftwidth=2 tabstop=2 softtabstop=2 :
 SHELL  = /bin/sh
-EXE		 = bin/highlow
-PKG    = github.com/nfisher/highlow
-SRC    = $(wildcard src/github.com/nfisher/highlow/*.go)
-TEST   = $(wildcard src/github.com/nfisher/highlow/*_test.go)
-GOPATH = $(CURDIR)
-export GOPATH
+PROJECT = github.com/nfisher/highlow
+EXE  = bin/highlow
+SRC  = $(wildcard *.go)
+TEST = $(wildcard *_test.go)
 
 .PHONY: all
 all: $(SRC) $(EXE) 
 
-.PHONY: prep
-prep:
-	mkdir -p src/$(PKG)
-
 .PHONY: clean
 clean:
-	rm -rf $(EXE)
+	go clean -i ./...
 
 .PHONY: format
 format: $(SRC)
-	go fmt $(PKG)
+	go fmt ./...
 
 .PHONY: cov
 cov:
-	go test -coverprofile $(TEST) $(PKG)
+	go test -coverprofile $(TEST) $(PROJECT)
 
 .PHONY: test
 test:
-	go test $(PKG)
+	go test $(PROJECT)
 
 .PHONY: run
 run: $(EXE)
 	$(EXE) 2000 "http://echo.maxymiser.qa/v5/?t="
 
 $(EXE): $(SRC) format test
-	go install $(PKG)
+	go install $(PROJECT)
 
