@@ -1,7 +1,7 @@
 # ex : shiftwidth=2 tabstop=2 softtabstop=2 :
 SHELL  = /bin/sh
 PROJECT = github.com/nfisher/highlow
-EXE  = $(GOROOT)/bin/highlow
+EXE  = $(GOPATH)/bin/highlow
 SRC  = $(wildcard *.go)
 TEST = $(wildcard *_test.go)
 
