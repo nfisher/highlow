@@ -1,7 +1,7 @@
 # ex : shiftwidth=2 tabstop=2 softtabstop=2 :
 SHELL  = /bin/sh
 PROJECT = github.com/nfisher/highlow
-EXE  = bin/highlow
+EXE  = $(GOROOT)/bin/highlow
 SRC  = $(wildcard *.go)
 TEST = $(wildcard *_test.go)
 
@@ -28,6 +28,6 @@ test:
 run: $(EXE)
 	$(EXE) 2000 "http://echo.maxymiser.qa/v5/?t="
 
-$(EXE): $(SRC) format test
+$(EXE): test
 	go install $(PROJECT)
 
